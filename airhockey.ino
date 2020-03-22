@@ -65,14 +65,17 @@ void(* resetFunc) (void) = 0; //Reset function
 ISR(TIMER1_OVF_vect)        // interrupt service routine 
 {
   TCNT1 = timer1_counter;   // preload timer
-  if(analogRead(A0) < 800)
+  if(statusByte & startFlag)
   {
-    statusByte |= goalA;
-  } 
-  
-  if(analogRead(A1) < 800)
-  {
-    statusByte |= goalB;
+    if(analogRead(A0) < 800)
+    {
+      statusByte |= goalA;
+    } 
+    
+    if(analogRead(A1) < 800)
+    {
+      statusByte |= goalB;
+    }
   }
 }
 
@@ -165,7 +168,7 @@ void endMessage()
 
   if(playerB > playerA)
   {
-    lcd.print(" Player A WON!! ");
+    lcd.print(" Player B WON!! ");
   }
   
   lcd.setCursor(0, 1);
